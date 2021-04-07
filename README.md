@@ -1,24 +1,35 @@
-# frontend
+# Grupo A - Frontend
 
-## Project setup
+## Desafio
+
+Lista de desafios a serem executados, seguir orientações conforme link abaixo:
+
+[Instruções](https://github.com/grupo-a/challenge-full-stack-web-laravel)
+
+## Executar a aplicação
+
+1 - Clonar repositório
+
+```bash
+git clone https://github.com/rbferreyra/grupo-a-desafio-frontend
 ```
+
+2 - Instalar dependências
+
+```bash
 yarn install
 ```
 
-### Compiles and hot-reloads for development
-```
+3 - Executar aplicação
+
+```bash
 yarn serve
 ```
 
-### Compiles and minifies for production
-```
-yarn build
-```
+- Ambiente local
 
-### Lints and fixes files
-```
-yarn lint
-```
+[http://127.0.0.1:8080](http://127.0.0.1:8080)
 
-### Customize configuration
-See [Configuration Reference](https://cli.vuejs.org/config/).
+- Ambiente produção (Netlify)
+
+[https://rbferreyra-grupo-a.netlify.app](https://rbferreyra-grupo-a.netlify.app)
