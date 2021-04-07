@@ -58,17 +58,48 @@
               outlined
               color="indigo"
               class="mr-2"
-              :to="{ name: 'StudentsUpdate', params: { uiid: row.item.uiid }}"
+              :to="{ name: 'StudentsUpdate', params: { uiid: row.item.uiid } }"
             >
               <v-icon color="info">mdi-pencil</v-icon>
             </v-btn>
-            <v-btn icon outlined color="red" @click="removeStudent(row.item)">
+            <v-btn
+              icon
+              outlined
+              color="red"
+              @click="openDialogRemoveStudent(row.item)"
+            >
               <v-icon color="danger">mdi-trash-can</v-icon>
             </v-btn>
           </td>
         </tr>
       </template>
     </v-data-table>
+
+    <v-dialog
+      v-model="isDialogRemoveStudentOpened"
+      max-width="600px"
+      persistent
+    >
+      <v-card>
+        <v-card-title class="headline justify-center">
+          Tem certeza que deseja remover este aluno?
+        </v-card-title>
+        <v-card class="d-flex justify-center pa-2" outlined tile>
+          {{ student.name }}
+        </v-card>
+        <v-card-actions>
+          <v-spacer></v-spacer>
+          <v-btn color="blue" text @click="closeDialogRemoveStudent"
+            >Cancelar</v-btn
+          >
+          ou
+          <v-btn color="red" class="white--text" @click="removeStudent"
+            >Confirmar</v-btn
+          >
+          <v-spacer></v-spacer>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </v-container>
 </template>
 
@@ -99,8 +130,18 @@ export default {
         this.pagination.currentPage = response.data.pagination.currentPage;
       });
     },
-    removeStudent(item) {
-      console.log("click on " + item.uiid);
+    openDialogRemoveStudent(student) {
+      this.student = student;
+      this.isDialogRemoveStudentOpened = true;
+    },
+    closeDialogRemoveStudent() {
+      this.isDialogRemoveStudentOpened = false;
+    },
+    removeStudent: async function () {
+      await StudentsService.removeStudent(this.student.uiid).then(() => {
+        this.isDialogRemoveStudentOpened = false;
+        this.getStudents();
+      });
     },
   },
   data() {
@@ -121,6 +162,13 @@ export default {
       loading: true,
       search: "",
       students: [],
+      student: {
+        name: "",
+        email: "",
+        cpf: "",
+        ra: "",
+      },
+      isDialogRemoveStudentOpened: false,
     };
   },
 };
