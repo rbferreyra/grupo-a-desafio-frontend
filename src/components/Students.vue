@@ -58,7 +58,7 @@
               outlined
               color="indigo"
               class="mr-2"
-              :to="{ path: '/students/edit/' + row.item.uiid }"
+              :to="{ name: 'StudentsUpdate', params: { uiid: row.item.uiid }}"
             >
               <v-icon color="info">mdi-pencil</v-icon>
             </v-btn>
