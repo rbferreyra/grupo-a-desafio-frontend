@@ -33,9 +33,16 @@
     <v-divider></v-divider>
 
     <v-data-table
+      :options.sync="options"
+      :server-items-length="pagination.total"
+      :items-per-page="pagination.perPage"
+      :page="pagination.page"
+      :pageCount="pagination.totalPages"
+      :footer-props="{
+        'items-per-page-options': [],
+      }"
       :headers="headers"
       :items="students"
-      :items-per-page="5"
       :search="search"
       :loading="loading"
       loading-text="Carregando..."
@@ -74,11 +81,27 @@ export default {
   mounted() {
     this.getStudents();
   },
+  watch: {
+    options: {
+      handler() {
+        this.getStudents();
+      },
+    },
+    deep: true,
+  },
   methods: {
     getStudents: async function () {
-      const response = await StudentsService.getStudents();
-      this.students = response.data;
-      this.loading = false;
+      this.loading = true;
+      const { page } = this.options;
+
+      await StudentsService.getStudents(page).then((response) => {
+        this.loading = false;
+        this.students = response.data.data;
+
+        this.pagination.total = response.data.pagination.total;
+        this.pagination.perPage = response.data.pagination.perPage;
+        this.pagination.currentPage = response.data.pagination.currentPage;
+      });
     },
     removeStudent(item) {
       console.log("click on " + item.uiid);
@@ -92,6 +115,13 @@ export default {
         { text: "CPF", value: "cpf" },
         { text: "Ações", value: "actions", sortable: false, width: "12%" },
       ],
+      options: {},
+      pagination: {
+        currentPage: 1,
+        perPage: 20,
+        total: 0,
+        totalPages: 0,
+      },
       loading: true,
       search: "",
       students: [],
@@ -120,5 +150,10 @@ tbody tr:nth-of-type(odd) {
 
 .theme--light.v-data-table thead tr th {
   color: white;
+}
+
+.theme--light.v-data-table .v-data-footer {
+  height: 50px;
+  font-size: 14px;
 }
 </style>

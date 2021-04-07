@@ -1,9 +1,9 @@
 import axios from 'axios';
 
 const StudentsService = {
-    async getStudents() {
-        const response = await axios.get('/students')
-        return response.data;
+    async getStudents(page) {
+        return await axios.get('/students?page=' + page)
+        // return response.data;
     },
     async createStudent(data) {
         const response = await axios.post('/students', data)
