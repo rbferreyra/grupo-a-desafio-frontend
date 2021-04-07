@@ -37,7 +37,6 @@
       :server-items-length="pagination.total"
       :items-per-page="pagination.perPage"
       :page="pagination.page"
-      :pageCount="pagination.totalPages"
       :footer-props="{
         'items-per-page-options': [],
       }"
@@ -78,9 +77,6 @@ import StudentsService from "@/services/StudentsService";
 
 export default {
   name: "Students",
-  mounted() {
-    this.getStudents();
-  },
   watch: {
     options: {
       handler() {
