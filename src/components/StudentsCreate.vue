@@ -12,6 +12,22 @@
     <v-card-text>
       <v-container>
         <v-row>
+          <v-col cols="12">
+            <v-list v-if="hasError">
+              <v-list-item
+                v-for="(error, index) in errors"
+                :key="index"
+                class="pa-0"
+              >
+                <v-alert dense text type="error" width="100%">
+                  {{ error[0] }}
+                </v-alert>
+              </v-list-item>
+            </v-list>
+            <v-alert v-if="hasSuccess" dense text type="success" width="100%">
+              Aluno cadastrado com sucesso!
+            </v-alert>
+          </v-col>
           <v-col cols="2">
             <v-subheader class="grey lighten-3 font-weight-bold"
               >Nome</v-subheader
@@ -21,6 +37,7 @@
             <v-text-field
               label="Infome o nome completo"
               required
+              v-model="student.name"
             ></v-text-field>
           </v-col>
           <v-col cols="2">
@@ -32,6 +49,7 @@
             <v-text-field
               label="Informe apenas um e-mail"
               required
+              v-model="student.email"
             ></v-text-field>
           </v-col>
           <v-col cols="2">
@@ -43,6 +61,7 @@
             <v-text-field
               label="Informe o registro acadêmico"
               max-length="20"
+              v-model="student.ra"
             ></v-text-field>
           </v-col>
           <v-col cols="2">
@@ -56,6 +75,7 @@
               required
               min-length="11"
               max-length="14"
+              v-model="student.cpf"
             ></v-text-field>
           </v-col>
         </v-row>
@@ -64,24 +84,60 @@
     <v-card-actions>
       <v-spacer></v-spacer>
 
-        <v-btn large color="grey lighten-3" class="font-weight-bold text-none" to="/">
-          Cancelar
-        </v-btn>
-        <v-btn large color="grey" class="font-weight-bold text-none white--text" @click="createStudent()">
-          Salvar
-        </v-btn>
+      <v-btn
+        large
+        color="grey lighten-3"
+        class="font-weight-bold text-none"
+        to="/"
+      >
+        Cancelar
+      </v-btn>
+      <v-btn
+        large
+        color="grey"
+        class="font-weight-bold text-none white--text"
+        @click="createStudent"
+      >
+        Salvar
+      </v-btn>
     </v-card-actions>
   </v-container>
 </template>
 
 <script>
+import StudentsService from "@/services/StudentsService";
+
 export default {
   name: "StudentsCreate",
   methods: {
-    createStudent() {
-      console.log('Criar novo estudante');
+    createStudent: async function () {
+      await StudentsService.createStudent(this.student)
+        .then(() => {
+          this.hasError = false;
+          this.hasSuccess = true;
+        })
+        .catch((error) => {
+          this.hasError = true;
+          this.hasSuccess = false;
+          this.errors = error.response.data.errors;
+
+          window.scrollTo(0, 0);
+        });
     },
-  },  
+  },
+  data() {
+    return {
+      hasError: false,
+      hasSuccess: false,
+      errors: [],
+      student: {
+        name: "",
+        email: "",
+        cpf: "",
+        ra: "",
+      },
+    };
+  },
 };
 </script>
 <style>
