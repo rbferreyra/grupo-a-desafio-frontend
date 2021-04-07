@@ -19,7 +19,7 @@
       <v-divider></v-divider>
 
       <v-list>
-        <v-list-item link>
+        <v-list-item link to="/">
           <v-list-item-icon>
             <v-icon>mdi-face</v-icon>
           </v-list-item-icon>
@@ -32,19 +32,16 @@
     </v-navigation-drawer>
 
     <v-main>
-      <Students />
+      <router-view></router-view>
     </v-main>
   </v-app>
 </template>
 
 <script>
-import Students from "./components/Students";
-
 export default {
   name: "App",
 
   components: {
-    Students,
   },
 };
 </script>
