@@ -24,7 +24,7 @@
         </v-btn>
       </v-col>
       <v-col cols="3" align="right">
-        <v-btn dark large color="grey" class="font-weight-bold text-none">
+        <v-btn dark large color="grey" class="font-weight-bold text-none" to="/students/create">
           Cadastrar Aluno
         </v-btn>
       </v-col>
