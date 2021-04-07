@@ -10,21 +10,22 @@
     </v-sheet>
     <v-divider></v-divider>
     <v-row class="pt-4 pr-4 pl-4" no-gutters>
-      <v-col cols="7">
-        <v-text-field label="Digite sua busca" clearable></v-text-field>
+      <v-col cols="9">
+        <v-text-field
+          v-model="search"
+          label="Digite sua busca"
+          append-icon="mdi-account-search"
+          clearable
+        ></v-text-field>
       </v-col>
-      <v-col cols="2" align="center">
+      <v-col cols="3" align="right">
         <v-btn
           dark
           large
-          color="grey lighten-3"
-          class="font-weight-bold black--text text-none"
+          color="grey"
+          class="font-weight-bold text-none"
+          to="/students/create"
         >
-          Pesquisar
-        </v-btn>
-      </v-col>
-      <v-col cols="3" align="right">
-        <v-btn dark large color="grey" class="font-weight-bold text-none" to="/students/create">
           Cadastrar Aluno
         </v-btn>
       </v-col>
@@ -35,6 +36,9 @@
       :headers="headers"
       :items="students"
       :items-per-page="5"
+      :search="search"
+      :loading="loading"
+      loading-text="Carregando..."
       class="elevation-1"
     >
       <template v-slot:item="row">
@@ -43,7 +47,13 @@
           <td>{{ row.item.name }}</td>
           <td>{{ row.item.cpf }}</td>
           <td>
-            <v-btn icon outlined color="indigo" @click="editStudent(row.item)" class="mr-2">
+            <v-btn
+              icon
+              outlined
+              color="indigo"
+              class="mr-2"
+              :to="{ path: '/students/edit/' + row.item.uiid }"
+            >
               <v-icon color="info">mdi-pencil</v-icon>
             </v-btn>
             <v-btn icon outlined color="red" @click="removeStudent(row.item)">
@@ -57,14 +67,21 @@
 </template>
 
 <script>
+import StudentsService from "@/services/StudentsService";
+
 export default {
   name: "Students",
+  mounted() {
+    this.getStudents();
+  },
   methods: {
-    editStudent(item) {
-      console.log("click on " + item.ra);
+    getStudents: async function () {
+      const response = await StudentsService.getStudents();
+      this.students = response.data;
+      this.loading = false;
     },
     removeStudent(item) {
-      console.log("click on " + item.ra);
+      console.log("click on " + item.uiid);
     },
   },
   data() {
@@ -75,62 +92,33 @@ export default {
         { text: "CPF", value: "cpf" },
         { text: "Ações", value: "actions", sortable: false, width: "12%" },
       ],
-      students: [
-        {
-          ra: "123456",
-          name: "Paula Souza",
-          cpf: "12345678965",
-          glutenfree: true,
-        },
-        {
-          ra: "654321",
-          name: "João Silva",
-          cpf: "12345678965",
-          glutenfree: true,
-        },
-        {
-          ra: "987654",
-          name: "Marina Miranda",
-          cpf: "12345678965",
-          glutenfree: true,
-        },
-        {
-          ra: "789456",
-          name: "Mauricio Souza",
-          cpf: "12345678965",
-          glutenfree: true,
-        },
-        {
-          ra: "159753",
-          name: "Mateus Ceara",
-          cpf: "12345678965",
-          glutenfree: true,
-        },
-      ],
+      loading: true,
+      search: "",
+      students: [],
     };
   },
 };
 </script>
 
 <style>
-  tbody tr:nth-of-type(even) {
-    background-color: rgba(236, 237, 237);
-  }
+tbody tr:nth-of-type(even) {
+  background-color: rgba(236, 237, 237);
+}
 
-  tbody tr:nth-of-type(odd) {
-    background-color: rgb(250 ,250, 250);
-  }
+tbody tr:nth-of-type(odd) {
+  background-color: rgb(250, 250, 250);
+}
 
-  .v-data-table-header {
-    background-color: rgba(182, 183, 187);
-    color: white;
-  }
+.v-data-table-header {
+  background-color: rgba(182, 183, 187);
+  color: white;
+}
 
-  .v-data-footer {
-    background-color: rgb(250 ,250, 250);
-  }
+.v-data-footer {
+  background-color: rgb(250, 250, 250);
+}
 
-  .theme--light.v-data-table thead tr th {
-    color: white;
-  }
+.theme--light.v-data-table thead tr th {
+  color: white;
+}
 </style>

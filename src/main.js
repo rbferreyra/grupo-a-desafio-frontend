@@ -8,7 +8,7 @@ import axios from 'axios';
 Vue.config.productionTip = false
 
 Vue.use(VueAxios, axios)
-axios.defaults.baseURL = 'https://rbferreyra-grupo-a.herokuapp.com/api'
+axios.defaults.baseURL = 'https://rbferreyra-grupo-a.herokuapp.com/api/v1'
 
 new Vue({
   router,
