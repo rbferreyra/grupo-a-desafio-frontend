@@ -6,7 +6,7 @@
       justify="center"
       class="pa-4"
     >
-      <div class="font-weight-bold">Cadastro de Aluno</div>
+      <div class="font-weight-bold">Atualizar cadastro de Aluno</div>
     </v-sheet>
     <v-divider></v-divider>
     <v-card-text>
@@ -25,12 +25,12 @@
               </v-list-item>
             </v-list>
             <v-alert v-if="hasSuccess" dense text type="success" width="100%">
-              Aluno cadastrado com sucesso!
+              Aluno atualizado com sucesso!
             </v-alert>
           </v-col>
           <v-col cols="2">
             <v-subheader class="grey lighten-3 font-weight-bold"
-              >Nome</v-subheader
+              >Nome*</v-subheader
             >
           </v-col>
           <v-col cols="10">
@@ -42,7 +42,7 @@
           </v-col>
           <v-col cols="2">
             <v-subheader class="grey lighten-3 font-weight-bold"
-              >E-mail</v-subheader
+              >E-mail*</v-subheader
             >
           </v-col>
           <v-col cols="10">
@@ -62,6 +62,7 @@
               label="Informe o registro acadêmico"
               max-length="20"
               v-model="student.ra"
+              disabled
             ></v-text-field>
           </v-col>
           <v-col cols="2">
@@ -72,10 +73,10 @@
           <v-col cols="10">
             <v-text-field
               label="Informe o número do documento"
-              required
               min-length="11"
               max-length="14"
               v-model="student.cpf"
+              disabled
             ></v-text-field>
           </v-col>
         </v-row>
@@ -96,7 +97,7 @@
         large
         color="grey"
         class="font-weight-bold text-none white--text"
-        @click="createStudent"
+        @click="updateStudent"
       >
         Salvar
       </v-btn>
@@ -120,11 +121,21 @@
 import StudentsService from "@/services/StudentsService";
 
 export default {
-  name: "StudentsCreate",
+  name: "StudentsUpdate",
+  mounted() {
+    this.getStudent();
+  },
   methods: {
-    createStudent: async function () {
+    getStudent: async function () {
+      this.uiid = this.$route.params.uiid;
+
+      await StudentsService.getStudent(this.uiid).then((response) => {
+        this.student = response.data;
+      });
+    },
+    updateStudent: async function () {
       this.loading = true;
-      await StudentsService.createStudent(this.student)
+      await StudentsService.updateStudent(this.uiid, this.student)
         .then(() => {
           this.hasError = false;
           this.hasSuccess = true;
@@ -146,6 +157,7 @@ export default {
       hasError: false,
       hasSuccess: false,
       errors: [],
+      uiid: false,
       student: {
         name: "",
         email: "",

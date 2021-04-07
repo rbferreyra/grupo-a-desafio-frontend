@@ -2,6 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Students from '../components/Students.vue'
 import StudentsCreate from '../components/StudentsCreate.vue'
+import StudentsUpdate from '../components/StudentsUpdate.vue'
 
 Vue.use(VueRouter)
 
@@ -15,6 +16,11 @@ const routes = [
     path: '/students/create',
     name: 'StudentsCreate',
     component: StudentsCreate
+  },
+  {
+    path: '/students/edit/:uiid',
+    name: 'StudentsUpdate',
+    component: StudentsUpdate
   }
 ]
 
