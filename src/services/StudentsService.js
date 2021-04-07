@@ -17,6 +17,10 @@ const StudentsService = {
         const response = await axios.put(`/students/${uiid}`, data)
         return response.data;
     },    
+    async removeStudent(uiid) {
+        const response = await axios.delete(`/students/${uiid}`)
+        return response.data;
+    },    
 };
 
 export default StudentsService;

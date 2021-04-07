@@ -30,7 +30,7 @@
           </v-col>
           <v-col cols="2">
             <v-subheader class="grey lighten-3 font-weight-bold"
-              >Nome</v-subheader
+              >Nome*</v-subheader
             >
           </v-col>
           <v-col cols="10">
@@ -42,7 +42,7 @@
           </v-col>
           <v-col cols="2">
             <v-subheader class="grey lighten-3 font-weight-bold"
-              >E-mail</v-subheader
+              >E-mail*</v-subheader
             >
           </v-col>
           <v-col cols="10">
@@ -54,7 +54,7 @@
           </v-col>
           <v-col cols="2">
             <v-subheader class="grey lighten-3 font-weight-bold"
-              >RA</v-subheader
+              >RA*</v-subheader
             >
           </v-col>
           <v-col cols="10">
@@ -66,7 +66,7 @@
           </v-col>
           <v-col cols="2">
             <v-subheader class="grey lighten-3 font-weight-bold"
-              >CPF</v-subheader
+              >CPF*</v-subheader
             >
           </v-col>
           <v-col cols="10">
